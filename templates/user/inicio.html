@@ -64,6 +64,14 @@
             justify-content: center;
         }
 
+        select#filterSelect {
+            width: 300px;
+            margin: 12px;
+            padding: 8px;
+            position: absolute;
+            right: 60%;
+        }
+
         .table#table2 {
             align-items: center;
             display: flex;
@@ -76,7 +84,6 @@
             padding: 0 50px;
         }
 
-       
         table.dataTable thead th,
         table.dataTable thead td,
         table.dataTable tfoot th,
@@ -203,6 +210,9 @@
                             <div ng-if="vm.assignedTo != undefined &amp;&amp; vm.assignedTo.size === 0"
                                 class="working-on-empty">
                                 <div class="contable">
+                                    <select id="filterSelect">
+                                        <option value="">Todos</option>
+                                    </select>
                                     <table id="tablero" class="ui celled table" style="width: 100%">
                                         <colgroup>
                                             <col />
@@ -330,7 +340,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Lorem ipsum dolor sit.</td>
+                                                <td>Hola</td>
                                                 <td>X</td>
                                                 <td>Y</td>
                                                 <td>Y</td>
@@ -526,12 +536,33 @@
 
     <script>
         var table = new DataTable("#tablero", {
-            ordering: false
+            ordering: false,
+            stateSave: true
         });
+
+        // Obtener datos únicos de la primera columna y crear opciones para el select
+        table.column(0).data().unique().sort().each(function (value, index) {
+            $('#filterSelect').append('<option value="' + value + '">' + value + '</option>');
+        });
+
+        // Manejar cambio en el select para filtrar la tabla
+        $('#filterSelect').on('change', function () {
+            var selectedValue = $(this).val();
+            table.column(0).search(selectedValue).draw();
+        });
+
+
+
+
+
         // Obtener el elemento label
         const label = document.querySelector('.dt-search label');
         // Cambiar el texto
         label.textContent = 'Buscar:';
+
+
+
+
     </script>
 </body>
 
