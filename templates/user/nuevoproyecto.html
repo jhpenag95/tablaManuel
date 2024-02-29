@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="fragment" content="!">
+    <title>Create Project</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="agile, scrum, taiga, management, project, developer, designer, user experience">
+    <link rel="stylesheet" href="{% static './css/theme-taiga.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-HA8aIQXlN7sUkuqzGZK8r+4LntXBzPwONCzqOUiD54/1xbS49rI/12py9U3WlRj9WcmWlvqzB8lyqbqE2tzBxw==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <link rel="icon" type="image/png" href="http://localhost:9000/v-1708598134890/images/favicon.png">
+</head>
+<body >
+    <div tg-navigation-bar="" ng-if="!errorHandling.showingError">
+        <nav ng-if="vm.isEnabledHeader" class="navbar">
+            <div class="nav-left">
+                <div ng-if="vm.isAuthenticated" tg-dropdown-project-list="tg-dropdown-project-list" active="vm.active == 'projects' || vm.active == 'project'" class="topnav-dropdown-wrapper">
+                    <div ng-class="{'active': active}" class="dropdown-project-list">
+                        <a href="http://localhost:9000/projects" title="Proyectos" tg-nav="projects" class="dropdown-project-list-projects">Tus Proyectos</a>
+                        <div class="navbar-dropdown">
+                            <div ng-if="!vm.projects.size">
+                                <h2>Crea tu primer proyecto</h2>
+                                <p class="dropdown-project-list-desc">Aún no tienes ningún proyecto. Crea uno ahora, invita a tu equipo y comienza a usar Colvapro al máximo.</p>
+                                <div class="create-options">
+                                    <a href="#" tg-nav="create-project" title="Nuevo proyecto" class="create-project-btn button-primary"><span>Nuevo proyecto</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div tg-dropdown-user="tg-dropdown-user">
+                <div class="dropdown-user-inner">
+                    <div class="dropdown-user-navbar">
+                        <a tg-nav="profile" title="mike" class="user-avatar" href="http://localhost:9000/profile">
+                            <img tg-avatar="vm.user" alt="mike" src="Home%20-%20Colvapro_files/user-avatar-05.png" title="mike" style="background: rgb(183, 203, 131);">
+                        </a>
+                        <button class="chevron">
+                            <tg-svg svg-icon="icon-chevron-down"></tg-svg>
+                        </button>
+                    </div>
+                    <div class="navbar-dropdown dropdown-user">
+                        <div class="dropdown-user-profile">
+                            <a tg-nav="profile" href="#" class="profile-link avatar">
+                                <img tg-avatar="vm.user" alt="mike" src="Home%20-%20Colvapro_files/user-avatar-05.png" title="mike" style="background: rgb(183, 203, 131);">
+                            </a>
+                            <div class="dropdown-user-data">
+                                <a tg-nav="profile" href="#" class="profile-link full-name">mike</a>
+                                <div class="profile-link email">manuel.david.13.b@gmail.com</div>
+                                <p>
+                                    <a href="#" tg-nav="user-settings-user-profile" title="Editar perfil" translate="PROJECT.NAVIGATION.EDIT_PROFILE" class="edit-profile">Editar perfil</a>
+                                </p>
+                            </div>
+                        </div>
+                        <ul>
+                            <li class="user-profile-option">
+                                <a href="#" tg-nav="user-settings-user-change-password" title="Configuración de la cuenta" translate="PROJECT.NAVIGATION.ACCOUNT_SETTINGS" class="secondary">Configuración de la cuenta</a>
+                            </li>
+                            <li class="user-profile-option">
+                                <a href="#" tg-nav="user-settings-mail-notifications" title="Editar tus configuraciones de notificación" translate="PROJECT.NAVIGATION.NOTIFICATIONS" class="secondary">Notificaciones</a>
+                            </li>
+                            <li class="user-profile-option">
+                                <a href="#" ng-click="vm.logout()" title="Cerrar sesión" translate="COMMON.LOGOUT">Cerrar sesión</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div ng-if="!errorHandling.showingError">
+        <div ng-view="" class="master" style="">
+            <tg-create-project-form type="kanban">
+                <div class="create-project">
+                    <div ng-if="vm.type == 'kanban'" class="create-project-title-wrapper">
+                        <tg-svg svg-icon="icon-kanban">
+                            <svg class="icon icon-kanban" style="fill: ">
+                                <use xlink:href="#icon-kanban" href="#icon-kanban"></use>
+                            </svg>
+                        </tg-svg>
+                        <h1 translate="PROJECT.CREATE.TEMPLATE_KANBAN" class="create-project-title">Kanban</h1>
+                    </div>
+                    <h3 ng-if="vm.type == 'kanban'" translate="PROJECT.CREATE.TEMPLATE_KANBAN_DESC" class="create-project-description">Keep a constant workflow on independent tasks</h3>
+                    <form action="/ruta/donde/enviar/el/formulario/" method="post">
+                        {% csrf_token %}
+                        <fieldset>
+                            <label for="name" translate="PROJECT.COMMON.DETAILS">Nombre del Proyecto</label>
+                            <input type="text" id="name" name="name" placeholder="Nombre del Proyecto (Requerido)" data-required="true" required="required">
+                        </fieldset>
+                        <fieldset>
+                            <label for="codigo">Código</label>
+                            <input type="text" id="codigo" name="codigo">
+                        </fieldset>
+                        <fieldset>
+                            <label for="description" translate="PROJECT.COMMON.DESCRIPTION">Descripción del Proyecto</label>
+                            <textarea id="description" name="description" placeholder="Descripción del Proyecto (Requerido)" data-required="true" required="required"></textarea>
+                        </fieldset>
+                        <fieldset>
+                            <label for="fecha_creacion">Fecha de Creación</label>
+                            <input type="date" id="fecha_creacion" name="fecha_creacion">
+                        </fieldset>
+                        <fieldset>
+                            <label for="fecha_inicio_planeada">Fecha de Inicio Planeada</label>
+                            <input type="date" id="fecha_inicio_planeada" name="fecha_inicio_planeada">
+                        </fieldset>
+                        <fieldset>
+                            <label for="fecha_inicio_real">Fecha de Inicio Real</label>
+                            <input type="date" id="fecha_inicio_real" name="fecha_inicio_real">
+                        </fieldset>
+                        <fieldset>
+                            <label for="fecha_finalizacion_planeada">Fecha de Finalización Planeada</label>
+                            <input type="date" id="fecha_finalizacion_planeada" name="fecha_finalizacion_planeada">
+                        </fieldset>
+                        <fieldset>
+                            <label for="fecha_finalizacion_real">Fecha de Finalización Real</label>
+                            <input type="date" id="fecha_finalizacion_real" name="fecha_finalizacion_real">
+                        </fieldset>
+                        <fieldset>
+                            <label for="alcance">Alcance</label>
+                            <textarea id="alcance" name="alcance"></textarea>
+                        </fieldset>
+                        <fieldset>
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" name="estado">
+                        </fieldset>
+                        <fieldset>
+                            <label for="porcentaje_completado">Porcentaje Completado</label>
+                            <input type="number" id="porcentaje_completado" name="porcentaje_completado" min="0" max="100">
+                        </fieldset>
+                        <fieldset>
+                            <label for="tipo">Tipo</label>
+                            <select id="tipo" name="tipo">
+                                <option value="abierto">Proyectos Integración</option>
+                                <option value="suspendido">Necesidades entrega operación</option>
+                                <option value="cerrado">Cerrado</option>
+                            </select>
+                        </fieldset>
+                        <fieldset>
+                            <label for="user">Usuario</label>
+                            <input type="text" id="user" name="user">
+                        </fieldset>
+                        <fieldset>
+                            <label for="lider">Líder</label>
+                            <input type="text" id="lider" name="lider">
+                        </fieldset>
+                        <fieldset>
+                            <label for="grupo">Grupo</label>
+                            <select id="grupo" name="grupo">
+                                <option value="lista1">Lista 1</option>
+                                <option value="lista2">Lista 2</option>
+                                <option value="lista3">Lista 3</option>
+                            </select>
+                        </fieldset>
+                        <fieldset>
+                            <label for="categoria">Categoría</label>
+                            <input type="text" id="categoria" name="categoria">
+                        </fieldset>
+                        <fieldset>
+                            <label for="antecedentes">Antecedentes</label>
+                            <textarea id="antecedentes" name="antecedentes"></textarea>
+                        </fieldset>
+                        <fieldset>
+                            <label for="fase">Fase</label>
+                            <input type="text" id="fase" name="fase">
+                        </fieldset>
+                        <fieldset>
+                            <label for="programas">Programas</label>
+                            <select id="programas" name="programas">
+                                <option value="programa1">Programa 1</option>
+                                <option value="programa2">Programa 2</option>
+                                <option value="programa3">Programa 3</option>
+                            </select>
+                        </fieldset>
+                        <fieldset>
+                            <label for="comentarios">Comentarios</label>
+                            <textarea id="comentarios" name="comentarios"></textarea>
+                        </fieldset>
+                        <fieldset>
+                            <label for="spi">SPI</label>
+                            <input type="text" id="spi" name="spi">
+                        </fieldset>
+                        <fieldset>
+                            <label for="es">ES</label>
+                            <input type="text" id="es" name="es">
+                        </fieldset>
+                        <div class="create-project-action">
+                            <button type="submit" translate="PROJECT.CREATE.TITLE" class="btn-small create-project-action-submit">Crear Proyecto</button>
+                        </div>
+                    </form>
+                    
+                    
+                </div>
+            </tg-create-project-form>
+        </div>
+    </div>
+
+
+</body>
+</html>
